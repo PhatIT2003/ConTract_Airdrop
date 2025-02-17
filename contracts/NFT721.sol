@@ -7,11 +7,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol"; 
 
-  contract MyNFT is ERC721, ERC721URIStorage, ERC721Burnable, ERC721Enumerable, Ownable {
+   contract MyNFT is ERC721, ERC721URIStorage, ERC721Burnable, ERC721Enumerable, Ownable {
     // Add marketplace address
     address public marketplace;
-    
-    constructor() ERC721("NFT", "NFT") {}
+    uint private _tokenIdCounter;
+    event TokenURIUpdated(uint256 tokenId, string newURI);
+    constructor() ERC721("pioneNFT", "UNFT") {}
     
     // Add function to set marketplace address
     function setMarketplace(address _marketplace) external onlyOwner {
@@ -32,7 +33,11 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
     {
         super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
     }
-
+    function updateTokenURI(uint256 tokenId, string memory newURI) public onlyOwner {
+        require(tokenId < _tokenIdCounter, "Token ID does not exist");
+        _setTokenURI(tokenId, newURI);
+        emit TokenURIUpdated(tokenId, newURI);
+    }
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }

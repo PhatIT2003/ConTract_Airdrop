@@ -22,7 +22,7 @@ contract NFTAirdrop is Ownable, ReentrancyGuard, Pausable {
         uint256 tokenId;
         string nftURI;
         uint256 amountReward;
-        bool claimable;      // Admin can set this to true to allow claiming
+        bool claimable;     
         uint256 mintTime;
         uint256 unlockTime;
         uint256 lastupdate;
@@ -71,7 +71,7 @@ contract NFTAirdrop is Ownable, ReentrancyGuard, Pausable {
         emit NativeCoinDeposited(msg.sender, msg.value);
     }
 
-    function setLockPeriod(uint256 _newLockPeriod) external onlyOwner {
+    function setLockTimeNFT(uint256 _newLockPeriod) external onlyOwner {
         require(_newLockPeriod > 0, "Invalid lock period");
         lockPeriod = _newLockPeriod;
         emit LockPeriodUpdated(_newLockPeriod);
